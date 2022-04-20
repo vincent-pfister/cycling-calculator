@@ -1,0 +1,34 @@
+{
+  "name": "cycling-calculator",
+  "description": "library for cycling-related computations",
+  "version": "1.0.0",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "jest",
+    "lint": "eslint ./src --ext .ts"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.1",
+    "@typescript-eslint/eslint-plugin": "^5.20.0",
+    "@typescript-eslint/parser": "^5.20.0",
+    "eslint": "^8.13.0",
+    "eslint-config-prettier": "^8.5.0",
+    "jest": "^27.5.1",
+    "prettier": "2.6.2",
+    "ts-jest": "^27.1.4",
+    "typescript": "^4.6.3"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vincent-pfister/cycling-calculator.git"
+  },
+  "author": "Vincent Pfister <vincent@famille-pfister.net>",
+  "bugs": {
+    "url": "https://github.com/vincent-pfister/cycling-calculator"
+  },
+  "homepage": "https://github.com/vincent-pfister/cycling-calculator",
+  "keywords": []
+}
