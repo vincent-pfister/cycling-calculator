@@ -1,3 +1,9 @@
+/**
+ * compute power <-> speed, taking gravity, drag and rolling resistance into account
+ *
+ * inspired by https://www.gribble.org/cycling/power_v_speed.html
+ */
+
 import { DefaultEnvParams, EnvParams, Params } from "./params";
 
 const GRAVITY = 9.8067;
@@ -5,9 +11,9 @@ const GRAVITY = 9.8067;
 class Forces {
   /**
    * forces applied to the system (in N)
-   * @param gravity 
-   * @param rolling 
-   * @param drag 
+   * @param gravity
+   * @param rolling
+   * @param drag
    */
   constructor(
     public readonly gravity: number,
@@ -15,7 +21,7 @@ class Forces {
     public readonly drag: number
   ) {}
 
-  get total() : number {
+  get total(): number {
     return this.gravity + this.rolling + this.drag;
   }
 }
@@ -26,6 +32,9 @@ class Power {
     public readonly wheel: number,
     public readonly drivetrainLoss: number,
     public readonly braking: number,
+    public readonly gravity: number,
+    public readonly rolling: number,
+    public readonly drag: number
   ) {}
 }
 
@@ -57,13 +66,23 @@ export class PowerCalulator {
 
   calculatePower(velocity: number, env: EnvParams = DefaultEnvParams): Power {
     const forces = this.calculateForces(velocity, env);
-    const wheelPower = forces.total * velocity * 1000 / 3600;
-    const drivetrainFraction = (wheelPower > 0)
-      ? 1 - this.params.drivetrainLoss
-      : 1
+    const wheelPower = (forces.total * velocity * 1000) / 3600;
+    const drivetrainFraction =
+      wheelPower > 0 ? 1 - this.params.drivetrainLoss : 1;
     const legPower = wheelPower / drivetrainFraction;
-    return (legPower > 0)
-      ? new Power(legPower, wheelPower, legPower - wheelPower, 0)
-      : new Power(legPower, wheelPower, 0, -legPower);
+    const [dtl, braking] =
+      legPower > 0 ? [legPower - wheelPower, 0] : [0, -legPower];
+    const gravityPower = forces.gravity * velocity / (3600 / 1000);
+    const rollingPower = forces.rolling * velocity / (3600 / 1000);
+    const dragPower = forces.drag * velocity / (3600 / 1000);
+    return new Power(
+      legPower,
+      wheelPower,
+      dtl,
+      braking,
+      gravityPower,
+      rollingPower,
+      dragPower
+    );
   }
 }
