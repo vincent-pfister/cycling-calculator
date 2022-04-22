@@ -1,9 +1,9 @@
-import { EnvParams, Params } from "./params";
-import { PowerCalulator } from "./power";
+import { DefaultEnvParams, DefaultParams, EnvParams, Params } from "./params";
+import { calcPower, calcSpeed, PowerCalculator } from "./power";
 
 describe("PowerCalculator", () => {
   const params = new Params(75, 7);
-  const calculator = new PowerCalulator(params);
+  const calculator = new PowerCalculator(params);
   const envFlat = new EnvParams();
   const envUphill = new EnvParams(0.05);
   const envDownhill = new EnvParams(-0.05);
@@ -74,5 +74,49 @@ describe("PowerCalculator", () => {
     it("should compute braking power", () => {
       expect(power.braking).toBeCloseTo(131.93);
     });
+  });
+
+  describe('calculateSpeed', () => {
+    it('should compute the speed', () => {
+      expect(calculator.calculateSpeed(150.27, envFlat)).toBeCloseTo(30)
+    })
+  })
+});
+
+describe("calcPower", () => {
+  it("should compute power", () => {
+    expect(
+      calcPower(
+        20,
+        0.05,
+        75,
+        7,
+        DefaultParams.frontalArea,
+        DefaultParams.dragCoef,
+        DefaultParams.drivetrainLoss,
+        DefaultEnvParams.rho,
+        DefaultEnvParams.headWind,
+        DefaultEnvParams.crr,
+      )
+    ).toBeCloseTo(284.81);
+  });
+});
+
+describe("calcSpeed", () => {
+  it("should compute power", () => {
+    expect(
+      calcSpeed(
+        284.81,
+        0.05,
+        75,
+        7,
+        DefaultParams.frontalArea,
+        DefaultParams.dragCoef,
+        DefaultParams.drivetrainLoss,
+        DefaultEnvParams.rho,
+        DefaultEnvParams.headWind,
+        DefaultEnvParams.crr,
+      )
+    ).toBeCloseTo(20);
   });
 });
