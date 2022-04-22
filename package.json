@@ -30,5 +30,8 @@
     "url": "https://github.com/vincent-pfister/cycling-calculator"
   },
   "homepage": "https://github.com/vincent-pfister/cycling-calculator",
-  "keywords": []
+  "keywords": [],
+  "dependencies": {
+    "@types/google-apps-script": "^1.0.46"
+  }
 }
