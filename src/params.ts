@@ -32,4 +32,5 @@ export class EnvParams {
   ) {}
 }
 
+export const DefaultParams = new Params(75, 7)
 export const DefaultEnvParams = new EnvParams();
